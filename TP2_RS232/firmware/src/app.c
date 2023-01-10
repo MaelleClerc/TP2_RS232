@@ -54,6 +54,9 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // *****************************************************************************
 
 #include "app.h"
+#include "GesFifoTh32.h"
+#include "Mc32CalCrc16.h"
+#include "Mc32gest_RS232.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -154,6 +157,9 @@ void APP_Tasks ( void )
         {
             // Initialisation du LCD
             lcd_init();
+            
+            // Initialisation du FIFO
+            InitFifoComm();
             
             GPWM_Initialize();
             
