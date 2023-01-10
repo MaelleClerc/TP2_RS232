@@ -187,6 +187,35 @@ void APP_Tasks ( void )
 
         case APP_STATE_SERVICE_TASKS:
         {
+            // Réception param. remote
+            CommStatus = GetMessage(&PWMData);
+            
+            // Lecture pot.
+            if (CommStatus == 0)        // local ?
+            {
+                GPWM_GetSettings();     // local
+            }
+            else
+            {
+                GPWM_GetSettings();     // remote
+            }
+            
+            // Affichage
+            GPWM_DispSettings();
+            
+            // Exécution PWM et gestion moteur
+            GPWM_ExecPWM(); 
+            
+            // Envoi valeurs
+            if (CommStatus == 0)                // local ?
+            {
+                SendMessage(&PWMData);          // local
+            }
+            else
+            {
+                SendMessage(&PWMDataToSend);    // remote
+            }
+            
             appData.state = APP_STATE_WAIT;     
             
             break;
@@ -204,6 +233,11 @@ void APP_Tasks ( void )
             break;
         }
     }
+}
+
+void APP_UpdateState (APP_STATES NewState)
+{
+    appData.state = NewState;
 }
 
  
