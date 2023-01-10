@@ -82,9 +82,17 @@ int GetMessage(S_pwmSettings *pData)
     // Lecture et décodage fifo réception
     // ...
     
+    // Message présent dans le FIFO?
+    NbCharToRead = GetReadSize(&descrFifoRX);
+    // Si >= taille message alors traite
+    if (NbCharToRead >= MESS_SIZE)
+    {
+        // Analyse du contenu du message
+    }
     
     // Gestion controle de flux de la réception
-    if(GetWriteSpace ( &descrFifoRX) >= (2*MESS_SIZE)) {
+    if(GetWriteSpace ( &descrFifoRX) >= (2*MESS_SIZE)) 
+    {
         // autorise émission par l'autre
         RS232_RTS = 0;
     }
