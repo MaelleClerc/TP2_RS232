@@ -164,11 +164,11 @@ void APP_Tasks ( void )
             GPWM_Initialize();
             
             // Affichage sur le LCD des lignes de base
-            printf_lcd("Tp1 PWM 2022-2023");
+            printf_lcd("Tp2 RS232 2022-2023");
             lcd_gotoxy(1, 2);
             printf_lcd("Maelle Clerc");
             lcd_gotoxy(1, 3);
-            printf_lcd("Miguel Santos");
+            printf_lcd("Gaja Subramaniyam");
             lcd_bl_on();
        
             // Initialisation de l'ADC
