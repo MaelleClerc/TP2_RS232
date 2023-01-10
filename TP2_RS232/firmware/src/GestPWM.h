@@ -34,10 +34,10 @@ extern S_pwmSettings PWMData;
 void GPWM_Initialize();
 
 // Ces 3 fonctions ont pour paramètre un pointeur sur la structure S_pwmSettings.
-void GPWM_GetSettings();	// Obtention vitesse et angle
-void GPWM_DispSettings();	// Affichage
-void GPWM_ExecPWM();		// Execution PWM et gestion moteur.
-void GPWM_ExecPWMSoft();	// Execution PWM software.
+void GPWM_GetSettings();            // Obtention vitesse et angle
+void GPWM_DispSettings(int Remote);	// Affichage
+void GPWM_ExecPWM();                // Execution PWM et gestion moteur.
+void GPWM_ExecPWMSoft();            // Execution PWM software.
 
 
 #endif

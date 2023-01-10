@@ -89,10 +89,17 @@ void GPWM_GetSettings()
 
 
 // Affichage des information en exploitant la structure
-void GPWM_DispSettings()
+void GPWM_DispSettings(int Remote)
 {
     lcd_gotoxy(1, 1);
-    printf_lcd("Tp1 PWM 2022-2023");
+    if (Remote == 1)                        // local ?
+    {
+        printf_lcd("** Remote Settings");   // remote
+    }
+    else
+    { 
+        printf_lcd("   Local Settings");    // local
+    }
     lcd_gotoxy(1, 2);
     printf_lcd("SpeedSetting %3d", PWMData.SpeedSetting);
     lcd_gotoxy(1, 3);
