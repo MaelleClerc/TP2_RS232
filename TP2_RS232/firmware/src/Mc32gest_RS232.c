@@ -88,6 +88,7 @@ int GetMessage(S_pwmSettings *pData)
     if (NbCharToRead >= MESS_SIZE)
     {
         // Analyse du contenu du message
+        //test
     }
     
     // Gestion controle de flux de la réception
