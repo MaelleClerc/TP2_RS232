@@ -4,7 +4,7 @@
     <configuration>
         <Harmony xmlns="Harmony" MHC="true"/>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
-            <name>TP1_PWM</name>
+            <name>TP2_RS232</name>
             <creation-uuid>e54023e9-3948-44ef-bf6f-29d8b223e555</creation-uuid>
             <make-project-type>0</make-project-type>
             <c-extensions>c</c-extensions>
@@ -19,6 +19,7 @@
                 <sourceRootElem>..\src</sourceRootElem>
                 <sourceRootElem>..\src\default</sourceRootElem>
                 <sourceRootElem>..\src\system_config\default</sourceRootElem>
+                <sourceRootElem>../../../../../../../../../../Users/maeclerc/Downloads/dsp_library[1]/DSP Library</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

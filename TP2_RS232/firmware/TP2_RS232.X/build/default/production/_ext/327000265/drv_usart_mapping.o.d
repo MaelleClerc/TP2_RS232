@@ -1,5 +1,5 @@
-build/default/production/_ext/1047219354/drv_oc_mapping.o: \
- ../src/system_config/default/framework/driver/oc/src/drv_oc_mapping.c \
+build/default/production/_ext/327000265/drv_usart_mapping.o: \
+ ../src/system_config/default/framework/driver/usart/src/drv_usart_mapping.c \
  ../src/system_config/default/system_config.h \
  ../../../../../../../bsp/pic32mx_skes/bsp.h \
  ../../../../../../../framework/peripheral/ports/plib_ports.h \
