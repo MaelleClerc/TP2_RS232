@@ -138,7 +138,7 @@ void APP_Initialize ( void )
 void APP_Tasks ( void )
 {
     /* Local variables */
-    uint8_t Led_Counter;
+    uint8_t Led_Counter, Cycle = 0;
     
     uint8_t Leds_Address[8] =    {BSP_LED_0, 
                                     BSP_LED_1, 
@@ -189,6 +189,7 @@ void APP_Tasks ( void )
         {
             // Réception param. remote
             CommStatus = GetMessage(&PWMData);
+            Cycle ++ ;
             
             // Lecture pot.
             if (CommStatus == 0)        // local ?
@@ -207,9 +208,10 @@ void APP_Tasks ( void )
             GPWM_ExecPWM(); 
             
             // Envoi valeurs
-            if (CommStatus == 0)                // local ?
+            if (CommStatus == 0 && Cycle == 5)                // local ?
             {
                 SendMessage(&PWMData);          // local
+                Cycle = 0;
             }
             else
             {

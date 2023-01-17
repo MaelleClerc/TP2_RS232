@@ -5,7 +5,7 @@
 //			        pour TP1 2022-2023
 //
 //	Auteur 		: 	M.Clerc
-//                  M.Santos
+//                  M.Subramaniyam
 //
 //	Version		:	V1.1
 //	Compilateur	:	XC32 V1.42 + Harmony 1.08
@@ -166,4 +166,4 @@ void GPWM_ExecPWMSoft()
     }
 }
 
-
+SendMessage

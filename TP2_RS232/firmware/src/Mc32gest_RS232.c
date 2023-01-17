@@ -104,11 +104,31 @@ int GetMessage(S_pwmSettings *pData)
 void SendMessage(S_pwmSettings *pData)
 {
     int8_t freeSize;
+    uint16_t ValCrc16 = 0xFFFF;
     
     // Traitement émission à introduire ICI
     // Formatage message et remplissage fifo émission
-    // ...
-    
+    // Test si place pour écrire 1 message
+    freeSize = GetWriteSpace (&descrFifoTX);
+    if(freeSize >= MESS_SIZE)
+    {
+        //Compose le message
+   
+        ValCrc16 = updateCRC16(TxMess.Start);  
+        ValCrc16 = updateCRC16(TxMess.Speed);
+        ValCrc16 = updateCRC16(TxMess.Angle);
+        
+        TxMess.LsbCrc = (ValCrc16 & 0xFF00) >> 8 ;
+        TxMess.MsbCrc = (ValCrc16 & 0x00FF) >> 8 ;
+        
+        //Dépose le message dans le fifo
+        
+        PutCharInFifo (&descrFifoTX, TxMess.Start);
+        PutCharInFifo (&descrFifoTX, TxMess.Angle);
+        PutCharInFifo (&descrFifoTX, TxMess.Speed);
+        PutCharInFifo (&descrFifoTX, TxMess.LsbCrc);
+        PutCharInFifo (&descrFifoTX, TxMess.MsbCrc);
+    }
     
     // Gestion du controle de flux
     // si on a un caractère à envoyer et que CTS = 0
