@@ -138,7 +138,7 @@ void APP_Initialize ( void )
 void APP_Tasks ( void )
 {
     /* Local variables */
-    uint8_t Led_Counter, CommStatus;
+    uint8_t Led_Counter;
     
     uint8_t Leds_Address[8] =    {BSP_LED_0, 
                                     BSP_LED_1, 
@@ -201,7 +201,7 @@ void APP_Tasks ( void )
             }
             
             // Affichage
-            GPWM_DispSettings(CommStatus);
+            GPWM_DispSettings();
             
             // Exécution PWM et gestion moteur
             GPWM_ExecPWM(); 
@@ -213,7 +213,7 @@ void APP_Tasks ( void )
             }
             else
             {
-                SendMessage(&PWMData);    // remote
+                SendMessage(&PWMDataToSend);    // remote
             }
             
             appData.state = APP_STATE_WAIT;     
