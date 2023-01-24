@@ -35,7 +35,7 @@ void GPWM_Initialize()
     DRV_TMR0_Start();
     DRV_TMR1_Start();
     DRV_TMR2_Start();
-    DRV_TMR3_Start();
+    // DRV_TMR3_Start();
     DRV_OC0_Start();
     DRV_OC1_Start();
     
