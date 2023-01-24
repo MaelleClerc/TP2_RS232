@@ -77,10 +77,13 @@ void InitFifoComm(void)
 int GetMessage(S_pwmSettings *pData)
 {
     int commStatus = 0;
+    uint16_t ValCrc16 = 0;
     
     // Traitement de réception à introduire ICI
     // Lecture et décodage fifo réception
     // ...
+    GetCharFromFifo(&descrFifoRX, &fifoRX);
+    
     
     // Message présent dans le FIFO?
     NbCharToRead = GetReadSize(&descrFifoRX);
@@ -89,6 +92,23 @@ int GetMessage(S_pwmSettings *pData)
     {
         // Analyse du contenu du message
         //test
+        if ((fifoRX[0] == 0xAA) && (fifoRX[5] == 0xAA))
+        {
+            ValCrc16 = 0xFFFF;
+            ValCrc16 = updateCRC16(ValCrc16, 0xAA);
+            ValCrc16 = updateCRC16(ValCrc16, fifoRX[1]);
+            ValCrc16 = updateCRC16(ValCrc16, fifoRX[2]);
+
+            if (ValCrc16 == ((fifoRX[3] << 8) + fifoRX[4]))
+            {
+                pData->AngleSetting = fifoRX[1];
+                pData->SpeedSetting = fifoRX[2];
+            }
+        }
+        else
+        {
+            
+        }
     }
     
     // Gestion controle de flux de la réception
