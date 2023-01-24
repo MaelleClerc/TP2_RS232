@@ -49,6 +49,7 @@ StruMess RxMess;
 #define FIFO_TX_SIZE ( (4*MESS_SIZE) + 1)  // 4 messages
 
 int8_t fifoRX[FIFO_RX_SIZE];
+int8_t monFifoRX[FIFO_RX_SIZE];
 // Declaration du descripteur du FIFO de réception
 S_fifo descrFifoRX;
 
@@ -77,14 +78,14 @@ void InitFifoComm(void)
 int GetMessage(S_pwmSettings *pData)
 {
     int commStatus = 0;
-    int8_t monFifoRX[FIFO_RX_SIZE];
     uint8_t Decalage = 0, i = 0;
     uint16_t ValCrc16 = 0xFFFF;
+    int32_t NbCharToRead;
     
     // Traitement de réception à introduire ICI
     // Lecture et décodage fifo réception
     // ...
-    GetCharFromFifo(&descrFifoRX, &monFifoRX);
+    GetCharFromFifo(&descrFifoRX, monFifoRX); // &monFifoRX[0]]
     
     
     // Message présent dans le FIFO?
@@ -139,11 +140,35 @@ int GetMessage(S_pwmSettings *pData)
 void SendMessage(S_pwmSettings *pData)
 {
     int8_t freeSize;
+    int16_t ValCrc16 = 0xFFFF;
+    StruMess monTxMess;
     
     // Traitement émission à introduire ICI
     // Formatage message et remplissage fifo émission
     // ...
-    
+    freeSize = GetWriteSpace (&descrFifoTX);
+    if(freeSize >= MESS_SIZE)
+    {
+        //Compose le message
+   
+        ValCrc16 = updateCRC16(ValCrc16, 0xAA);  
+        ValCrc16 = updateCRC16(ValCrc16, pData->AngleSetting);
+        ValCrc16 = updateCRC16(ValCrc16, pData->SpeedSetting);
+        
+        monTxMess.Start = 0xAA;
+        monTxMess.Angle = pData->AngleSetting;
+        monTxMess.Speed = pData->SpeedSetting;
+        monTxMess.MsbCrc = (ValCrc16 & 0xFF00) >> 8 ;
+        monTxMess.LsbCrc = (ValCrc16 & 0x00FF);
+        
+        //Dépose le message dans le fifo
+        
+        PutCharInFifo(&descrFifoTX, monTxMess.Start);
+        PutCharInFifo(&descrFifoTX, monTxMess.Angle);
+        PutCharInFifo(&descrFifoTX, monTxMess.Speed);
+        PutCharInFifo(&descrFifoTX, monTxMess.LsbCrc);
+        PutCharInFifo(&descrFifoTX, monTxMess.MsbCrc);
+    }
     
     // Gestion du controle de flux
     // si on a un caractère à envoyer et que CTS = 0
@@ -192,6 +217,9 @@ void SendMessage(S_pwmSettings *pData)
 			//  (pour savoir s'il y a une data dans le buffer HW RX : PLIB_USART_ReceiverDataIsAvailable())
 			//  (Lecture via fonction PLIB_USART_ReceiverByteReceive())
             // ...
+            
+            PLIB_USART_ReceiverDataIsAvailable(INT_ID_0);
+            PLIB_USART_ReceiverByteReceive(INT_ID_0);
             
                          
             LED4_W = !LED4_R; // Toggle Led4

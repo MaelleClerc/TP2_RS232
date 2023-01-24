@@ -1,6 +1,4 @@
-build/default/production/_ext/1688732426/system_interrupt.o: \
- ../src/system_config/default/system_interrupt.c \
- ../../../../../../../framework/system/common/sys_common.h ../src/app.h \
+build/default/production/_ext/1360937237/app.o: ../src/app.c ../src/app.h \
  ../src/system_config/default/system_config.h \
  ../../../../../../../bsp/pic32mx_skes/bsp.h \
  ../../../../../../../framework/peripheral/ports/plib_ports.h \
@@ -55,6 +53,7 @@ build/default/production/_ext/1688732426/system_interrupt.o: \
  ../../../../../../../framework/peripheral/tmr/processor/../templates/tmr_CounterAsyncWriteInProgress_Default.h \
  ../../../../../../../framework/peripheral/tmr/processor/../templates/tmr_TimerOperationMode_Default.h \
  ../src/system_config/default/system_definitions.h \
+ ../../../../../../../framework/system/common/sys_common.h \
  ../../../../../../../framework/system/common/sys_module.h \
  ../../../../../../../framework/driver/oc/drv_oc.h \
  ../../../../../../../framework/driver/driver_common.h \
@@ -244,11 +243,10 @@ build/default/production/_ext/1688732426/system_interrupt.o: \
  ../../../../../../../framework/system/debug/sys_debug.h \
  ../../../../../../../framework/system/ports/sys_ports.h \
  ../../../../../../../framework/system/ports/sys_ports_definitions.h \
- ../../../../../../../bsp/pic32mx_skes/Mc32DriverAdc.h \
+ ../src/app.h ../../../../../../../bsp/pic32mx_skes/Mc32DriverAdc.h \
  ../../../../../../../bsp/pic32mx_skes/Mc32DriverLcd.h ../src/GestPWM.h \
- ../src/system_config/default/system_definitions.h
-
-../../../../../../../framework/system/common/sys_common.h:
+ ../src/GesFifoTh32.h ../src/Mc32CalCrc16.h ../src/Mc32gest_RS232.h \
+ ../src/gestPWM.h
 
 ../src/app.h:
 
@@ -359,6 +357,8 @@ build/default/production/_ext/1688732426/system_interrupt.o: \
 ../../../../../../../framework/peripheral/tmr/processor/../templates/tmr_TimerOperationMode_Default.h:
 
 ../src/system_config/default/system_definitions.h:
+
+../../../../../../../framework/system/common/sys_common.h:
 
 ../../../../../../../framework/system/common/sys_module.h:
 
@@ -738,10 +738,18 @@ build/default/production/_ext/1688732426/system_interrupt.o: \
 
 ../../../../../../../framework/system/ports/sys_ports_definitions.h:
 
+../src/app.h:
+
 ../../../../../../../bsp/pic32mx_skes/Mc32DriverAdc.h:
 
 ../../../../../../../bsp/pic32mx_skes/Mc32DriverLcd.h:
 
 ../src/GestPWM.h:
 
-../src/system_config/default/system_definitions.h:
+../src/GesFifoTh32.h:
+
+../src/Mc32CalCrc16.h:
+
+../src/Mc32gest_RS232.h:
+
+../src/gestPWM.h:
