@@ -79,21 +79,28 @@ void InitFifoComm(void)
 int GetMessage(S_pwmSettings *pData)
 {
     int commStatus = 0;
-    uint8_t Decalage = 0, i = 0;
+    static uint8_t Decalage = 0, DecalageMessage = 0;
+    int8_t i = 0, j = 0; 
     uint16_t ValCrc16 = 0xFFFF;
     int32_t NbCharToRead;
     
     // Traitement de réception à introduire ICI
     // Lecture et décodage fifo réception
     // ...
-    GetCharFromFifo(&descrFifoRX, monFifoRX); // &monFifoRX[0]]
-    
+    GetCharFromFifo(&descrFifoRX, &i); // &monFifoRX[0]]
+    monFifoRX[Decalage] = i; 
+   
+    if (Decalage > 20)
+        Decalage = 0; 
+    else 
+        Decalage++; 
     
     // Message présent dans le FIFO?
     NbCharToRead = GetReadSize(&descrFifoRX);
     // Si >= taille message alors traite
     if (NbCharToRead >= MESS_SIZE)
     {
+        //commStatus = 1;
         // Analyse du contenu du message
         //test
         if ((monFifoRX[0] == 0xAA) && (monFifoRX[5] == 0xAA))
@@ -112,7 +119,7 @@ int GetMessage(S_pwmSettings *pData)
                 pData->absSpeed = abs(monFifoRX[2]);
                 
                 // Le message etant complet, on peut le nettoyer de la fifo
-                Decalage = 5;
+                DecalageMessage = 5;
                 
                 // On renvoie qu'un message a été recu
                 commStatus = 1;
@@ -121,13 +128,13 @@ int GetMessage(S_pwmSettings *pData)
         else
         {
             // Le message n'étant pas bon, on nettoie juste le byte le plus vieux de la fifo
-            Decalage = 1;
+            DecalageMessage = 1;
         }
         
         // Decalage du tableau intermediaire contenant le fifo selon les bytes deja lus ou utilises
-        for (i = 0; i <= NbCharToRead; i++)
+        for (j = 0; j <= NbCharToRead; j++)
         {
-            monFifoRX[i] = monFifoRX[Decalage + i];
+            monFifoRX[j] = monFifoRX[DecalageMessage + j];
         }
     }
     
@@ -137,7 +144,6 @@ int GetMessage(S_pwmSettings *pData)
         // autorise émission par l'autre
         RS232_RTS = 0;
     }
-                commStatus = 1;
     return commStatus;
 } // GetMessage
 
