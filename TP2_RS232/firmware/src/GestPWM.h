@@ -30,6 +30,7 @@ typedef struct {
 } S_pwmSettings;
 
 extern S_pwmSettings PWMData; 
+extern S_pwmSettings PWMDataToSend; 
 
 void GPWM_Initialize();
 

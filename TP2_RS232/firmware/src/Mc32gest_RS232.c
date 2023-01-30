@@ -41,6 +41,7 @@ typedef struct {
 
 // Struct pour émission des messages
 StruMess TxMess;
+StruMess monTxMess;
 // Struct pour réception des messages
 StruMess RxMess;
 
@@ -108,9 +109,13 @@ int GetMessage(S_pwmSettings *pData)
                 // Mise en memoire des valeurs de vitesse et d'angle recues
                 pData->AngleSetting = monFifoRX[1];
                 pData->SpeedSetting = monFifoRX[2];
+                pData->absSpeed = abs(monFifoRX[2]);
                 
                 // Le message etant complet, on peut le nettoyer de la fifo
                 Decalage = 5;
+                
+                // On renvoie qu'un message a été recu
+                commStatus = 1;
             }
         }
         else
@@ -141,7 +146,6 @@ void SendMessage(S_pwmSettings *pData)
 {
     int8_t freeSize;
     int16_t ValCrc16 = 0xFFFF;
-    StruMess monTxMess;
     
     // Traitement émission à introduire ICI
     // Formatage message et remplissage fifo émission
@@ -166,8 +170,8 @@ void SendMessage(S_pwmSettings *pData)
         PutCharInFifo(&descrFifoTX, monTxMess.Start);
         PutCharInFifo(&descrFifoTX, monTxMess.Angle);
         PutCharInFifo(&descrFifoTX, monTxMess.Speed);
-        PutCharInFifo(&descrFifoTX, monTxMess.LsbCrc);
         PutCharInFifo(&descrFifoTX, monTxMess.MsbCrc);
+        PutCharInFifo(&descrFifoTX, monTxMess.LsbCrc);
     }
     
     // Gestion du controle de flux

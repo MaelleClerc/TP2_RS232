@@ -187,6 +187,11 @@ void APP_Tasks ( void )
 
         case APP_STATE_SERVICE_TASKS:
         {
+            lcd_ClearLine(1);
+            lcd_ClearLine(2);
+            lcd_ClearLine(3);
+            lcd_ClearLine(4);
+            
             // Réception param. remote
             CommStatus = GetMessage(&PWMData);
             
@@ -213,7 +218,7 @@ void APP_Tasks ( void )
             }
             else
             {
-                SendMessage(&PWMData);    // remote
+                SendMessage(&PWMDataToSend);    // remote
             }
             
             appData.state = APP_STATE_WAIT;     

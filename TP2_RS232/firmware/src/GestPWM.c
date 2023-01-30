@@ -22,7 +22,9 @@
 #include "system_config/default/framework/driver/oc/drv_oc_static.h"
 #include "peripheral/oc/plib_oc.h"
 
-S_pwmSettings PWMData;      // pour les settings
+S_pwmSettings PWMData;          // pour les settings
+
+S_pwmSettings PWMDataToSend;    // pour les settings recus
 
 void GPWM_Initialize()
 {
@@ -95,17 +97,23 @@ void GPWM_DispSettings(int Remote)
     if (Remote == 1)                        // local ?
     {
         printf_lcd("** Remote Settings");   // remote
+        lcd_gotoxy(1, 2);
+        printf_lcd("SpeedSetting %3d", PWMDataToSend.SpeedSetting);
+        lcd_gotoxy(1, 3);
+        printf_lcd("absSpeed      %2d", PWMDataToSend.absSpeed);
+        lcd_gotoxy(1, 4);
+        printf_lcd("Angle        %3d", PWMDataToSend.AngleSetting);
     }
     else
     { 
         printf_lcd("   Local Settings");    // local
+        lcd_gotoxy(1, 2);
+        printf_lcd("SpeedSetting %3d", PWMData.SpeedSetting);
+        lcd_gotoxy(1, 3);
+        printf_lcd("absSpeed      %2d", PWMData.absSpeed);
+        lcd_gotoxy(1, 4);
+        printf_lcd("Angle        %3d", PWMData.AngleSetting);
     }
-    lcd_gotoxy(1, 2);
-    printf_lcd("SpeedSetting %3d", PWMData.SpeedSetting);
-    lcd_gotoxy(1, 3);
-    printf_lcd("absSpeed      %2d", PWMData.absSpeed);
-    lcd_gotoxy(1, 4);
-    printf_lcd("Angle        %3d", PWMData.AngleSetting);
 }
 
 // Execution PWM et gestion moteur à partir des info dans structure
