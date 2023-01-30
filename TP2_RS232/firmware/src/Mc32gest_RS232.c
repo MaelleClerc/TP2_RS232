@@ -137,6 +137,7 @@ int GetMessage(S_pwmSettings *pData)
         // autorise émission par l'autre
         RS232_RTS = 0;
     }
+                commStatus = 1;
     return commStatus;
 } // GetMessage
 
