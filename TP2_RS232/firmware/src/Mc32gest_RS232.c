@@ -187,7 +187,11 @@ void SendMessage(S_pwmSettings *pData)
 // !!!!!!!!
  void __ISR(_UART_1_VECTOR, ipl5AUTO) _IntHandlerDrvUsartInstance0(void)
 {
-    USART_ERROR UsartStatus;    
+    USART_ERROR UsartStatus;  
+    uint8_t TXsize;
+    int8_t c;
+    int8_t i_cts = 0;
+    BOOL TxBuffFull;
 
 
     // Marque début interruption avec Led3
@@ -218,9 +222,8 @@ void SendMessage(S_pwmSettings *pData)
 			//  (Lecture via fonction PLIB_USART_ReceiverByteReceive())
             // ...
             
-            PLIB_USART_ReceiverDataIsAvailable(INT_ID_0);
-            PLIB_USART_ReceiverByteReceive(INT_ID_0);
-            
+            c = PLIB_USART_ReceiverByteReceive(USART_ID_1);
+            PutCharInFifo(&descrFifoRX, c);
                          
             LED4_W = !LED4_R; // Toggle Led4
             // buffer is empty, clear interrupt flag
@@ -255,7 +258,21 @@ void SendMessage(S_pwmSettings *pData)
         //  S'il y a de la place dans le buffer d'émission (PLIB_USART_TransmitterBufferIsFull)
         //   (envoi avec PLIB_USART_TransmitterByteSend())
        
-        // ...
+        TXsize = GetReadSize(&descrFifoTX);
+        i_cts = RS232_CTS;
+        TxBuffFull = PLIB_USART_TransmitterBufferIsFull(USART_ID_1);
+        
+        if ((i_cts == 0) && (TXsize > 0) && (TxBuffFull == false))
+        {
+            do
+            {
+                GetCharFromFifo(&descrFifoTX, &c);
+                PLIB_USART_TransmitterByteSend(USART_ID_1, c);
+                i_cts = RS232_CTS;
+                TXsize = GetReadSize(&descrFifoTX);
+                TxBuffFull = PLIB_USART_TransmitterBufferIsFull(USART_ID_1);
+            }while ((i_cts == 0) && (TXsize > 0) && (TxBuffFull == false));
+        }
        
 	   
         LED5_W = !LED5_R; // Toggle Led5
